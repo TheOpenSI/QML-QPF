@@ -120,8 +120,10 @@ import json
 #save the results as Json file
 with open(SAVE_PATH + 'q_history.json','w') as json_file:
     json.dump(q_history.history, json_file)
+    
 with open(SAVE_PATH + 'classical_filtered_history.json','w') as json_file:
     json.dump(classical_filtered_history.history, json_file)
+
 with open(SAVE_PATH + 'classical_history.json','w') as json_file:
     json.dump(classical_history.history, json_file)
 

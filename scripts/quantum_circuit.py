@@ -6,24 +6,21 @@ from pennylane.templates import RandomLayers
 
 class Quantum():
 
-    def __init__(self, n_channels, n_layers):
+    def __init__(self, n_channels, n_layers, device):
         # Should add a config file
         self.n_channels = n_channels
         self.n_layers = n_layers
+        self.device = device
         
         # Random circuit parameters
         self.rand_params = np.random.uniform(high=2 * np.pi, size=(self.n_layers, self.n_channels))
-
-        # Define dev as an attribute (but don't initialize it yet)
-        self.dev = None
-    
         
     
     def circuit(self, phi):
-        dev = qml.device("default.qubit", wires=self.n_channels)
+        # dev = qml.device("default.qubit", wires=self.n_channels)
         
         # Create a QNode using the initialized device
-        @qml.qnode(dev)
+        @qml.qnode(self.device)
         def qnode(phi):
             # Encoding of 4 classical input values
             for j in range(self.n_channels):

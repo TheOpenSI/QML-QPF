@@ -1,7 +1,7 @@
-
+import pennylane as qml
 from pennylane import numpy as np
 import math
-from quantum_circuit import Quantum
+# from quantum_circuit import Quantum
 
 class Filters():
 
@@ -37,26 +37,28 @@ class Filters():
         sine_angle = math.sin(np.pi*angle)
         return(np.array([[cossine_angle, -sine_angle ],[ sine_angle ,cossine_angle]]))
     
-    def quanv(self, image, n_channels, n_layers):
-        """Convolves the input image with many applications of the same quantum circuit."""
-        out = np.zeros((14, 14, n_channels))
-        qml = Quantum(n_channels, n_layers)
+    # def quanv(self, image, n_channels, n_layers):
+    #     """Convolves the input image with many applications of the same quantum circuit."""
+    #     out = np.zeros((14, 14, n_channels))
+    #     #set the quantum device
+    #     device = qml.device("default.qubit", wires=n_channels)
+    #     qmc = Quantum(n_channels, n_layers, device)
 
-        # Loop over the coordinates of the top-left pixel of 2X2 squares
-        for j in range(0, 28, 2):
-            for k in range(0, 28, 2):
-                # Process a squared 2x2 region of the image with a quantum circuit
-                q_results = qml.circuit(
-                    [
-                        image[j, k, 0],
-                        image[j, k + 1, 0],
-                        image[j + 1, k, 0],
-                        image[j + 1, k + 1, 0]
-                    ]
-                )
-                # Assign expectation values to different channels of the output pixel (j/2, k/2)
-                for c in range(4):
-                    out[j // 2, k // 2, c] = q_results[c]
-        return out
+    #     # Loop over the coordinates of the top-left pixel of 2X2 squares
+    #     for j in range(0, 28, 2):
+    #         for k in range(0, 28, 2):
+    #             # Process a squared 2x2 region of the image with a quantum circuit
+    #             q_results = qmc.circuit(
+    #                 [
+    #                     image[j, k, 0],
+    #                     image[j, k + 1, 0],
+    #                     image[j + 1, k, 0],
+    #                     image[j + 1, k + 1, 0]
+    #                 ]
+    #             )
+    #             # Assign expectation values to different channels of the output pixel (j/2, k/2)
+    #             for c in range(4):
+    #                 out[j // 2, k // 2, c] = q_results[c]
+    #     return out
     
     

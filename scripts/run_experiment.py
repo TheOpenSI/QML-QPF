@@ -1,8 +1,10 @@
 from pennylane import numpy as np
+import pennylane as qml
+from pennylane.templates import RandomLayers
 import tensorflow as tf
 from tensorflow import keras
 import matplotlib.pyplot as plt
-
+import json
 from Filters import Filters
 
 ## Initialisation 
@@ -36,6 +38,45 @@ test_images = test_images / 255
 train_images = np.array(train_images[..., tf.newaxis], requires_grad=False)
 test_images = np.array(test_images[..., tf.newaxis], requires_grad=False)
 
+## the jupyther notebook always has a better result for the quantum filter (moving the whole quantum circuit to mains experiment script)
+
+dev = qml.device("default.qubit", wires=n_channels)
+# Random circuit parameters
+rand_params = np.random.uniform(high=2 * np.pi, size=(n_layers, n_channels))
+
+@qml.qnode(dev)
+def circuit(phi):
+    # Encoding of 4 classical input values
+    for j in range(4):
+        qml.RY(np.pi * phi[j], wires=j)
+
+    # Random quantum circuit
+    RandomLayers(rand_params, wires=list(range(n_channels)))
+
+    # Measurement producing 4 classical output values
+    return [qml.expval(qml.PauliZ(j)) for j in range(4)]
+
+def quanv(image):
+    """Convolves the input image with many applications of the same quantum circuit."""
+    out = np.zeros((14, 14, n_channels))
+
+    # Loop over the coordinates of the top-left pixel of 2X2 squares
+    for j in range(0, 28, 2):
+        for k in range(0, 28, 2):
+            # Process a squared 2x2 region of the image with a quantum circuit
+            q_results = circuit(
+                [
+                    image[j, k, 0],
+                    image[j, k + 1, 0],
+                    image[j + 1, k, 0],
+                    image[j + 1, k + 1, 0]
+                ]
+            )
+            # Assign expectation values to different channels of the output pixel (j/2, k/2)
+            for c in range(4):
+                out[j // 2, k // 2, c] = q_results[c]
+    return out
+
 
 ## apply the filters
 filter = Filters()
@@ -47,11 +88,11 @@ def apply_filter(image, type ):
         if type == 0:
             filtered_images.append(filter.classic_filter(image=img, n_channels=n_channels))
         elif type == 1:
-            filtered_images.append(filter.quanv(img, n_channels=n_channels, n_layers=n_layers))
+            # filtered_images.append(filter.quanv(image=img, n_channels=n_channels, n_layers=n_layers))
+            filtered_images.append(quanv(img))
     filtered_images = np.asarray(filtered_images)
 
     return(filtered_images)
-
 
  # apply the classical filter   
 
@@ -115,12 +156,10 @@ q_history = q_model.fit(
     verbose=2,
 )
 
-import json
-
 #save the results as Json file
 with open(SAVE_PATH + 'q_history.json','w') as json_file:
     json.dump(q_history.history, json_file)
-    
+
 with open(SAVE_PATH + 'classical_filtered_history.json','w') as json_file:
     json.dump(classical_filtered_history.history, json_file)
 

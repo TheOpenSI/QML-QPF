@@ -19,9 +19,6 @@ class Quantum():
     
         
     
-       
-
-    
     def circuit(self, phi):
         dev = qml.device("default.qubit", wires=self.n_channels)
         

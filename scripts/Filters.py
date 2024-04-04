@@ -1,4 +1,4 @@
-import pennylane as qml
+# import pennylane as qml
 from pennylane import numpy as np
 import math
 # from quantum_circuit import Quantum
@@ -31,6 +31,7 @@ class Filters():
                     out[j // 2, k // 2, c] = results[c]
                     
         return out
+
 
     def rotation_y(self, angle):
         cossine_angle = math.cos(np.pi*angle)

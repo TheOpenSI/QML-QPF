@@ -1,9 +1,12 @@
 
 from utils import read_configurations, choose_samples
 from tensorflow import keras
-class data_load:
+
+class data_load():
+
     def __init__(self,):
-    # Read configurations from config.json
+        # Read configurations from config.json
+
         config = read_configurations('config.json')
 
         self.n_epochs = config['EPOCHS']   # Number of optimization epochs
@@ -35,5 +38,4 @@ class data_load:
         test_images = test_images / 255
 
         return train_images, train_labels, test_images, test_labels
-## Initialisation 
 

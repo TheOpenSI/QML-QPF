@@ -6,6 +6,6 @@
     "CHANNELS" : 4,
     "SAVE_PATH" : "../results/",
     "PREPROCESS" : 1,
-    "DATA_REDUCTION": 0,
-    "REDUCTION_RATIO": 0.02
+    "DATA_REDUCTION": 1,
+    "REDUCTION_RATIO": 0.01
 }

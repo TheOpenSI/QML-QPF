@@ -19,6 +19,7 @@ def choose_samples(train_images, train_labels, test_images, test_labels, reducti
     # Determine number of samples to keep
     n_train = int(len(train_images) * reduction_ratio)
     n_test = int(len(test_images) * reduction_ratio)
+    print(n_train)
 
     # Select samples based on ratios
     train_images_selected = train_images[:n_train]

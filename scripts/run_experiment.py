@@ -6,6 +6,7 @@ from tensorflow import keras
 import matplotlib.pyplot as plt
 import json
 from Filters import Filters
+from Data_load import data_load
 
 ## Initialisation 
 

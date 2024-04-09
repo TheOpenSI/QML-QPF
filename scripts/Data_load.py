@@ -1,13 +1,15 @@
 
 from utils import read_configurations, choose_samples
 from tensorflow import keras
+from pennylane import numpy as np
+import tensorflow as tf
 
 class data_load():
 
     def __init__(self,):
         # Read configurations from config.json
 
-        config = read_configurations('config.json')
+        config = read_configurations('./config.json')
 
         self.n_epochs = config['EPOCHS']   # Number of optimization epochs
         self.n_layers = config['RNDM_LAYERS']    # Number of random layers
@@ -36,6 +38,10 @@ class data_load():
         # Normalize pixel values within 0 and 1
         train_images = train_images / 255
         test_images = test_images / 255
+
+        # Add extra dimension for convolution channels
+        train_images = np.array(train_images[..., tf.newaxis], requires_grad=False)
+        test_images = np.array(test_images[..., tf.newaxis], requires_grad=False)
 
         return train_images, train_labels, test_images, test_labels
 

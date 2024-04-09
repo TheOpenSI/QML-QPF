@@ -10,36 +10,45 @@ from Data_load import data_load
 
 ## Initialisation 
 
-n_epochs = 30   # Number of optimization epochs
-n_layers = 1    # Number of random layers
-n_train = 50    # Size of the train dataset
-n_test = 30     # Size of the test dataset
-n_channels = 4 # Number of channels
+# n_epochs = 30   # Number of optimization epochs
+# n_layers = 1    # Number of random layers
+# n_train = 50    # Size of the train dataset
+# n_test = 30     # Size of the test dataset
+# n_channels = 4 # Number of channels
 
-SAVE_PATH = "../results/"  # Data saving folder
-PREPROCESS = True           # If False, skip quantum processing and load data from SAVE_PATH
-np.random.seed(0)           # Seed for NumPy random number generator
-tf.random.set_seed(0)       # Seed for TensorFlow random number generator
+# SAVE_PATH = "../results/"  # Data saving folder
+# PREPROCESS = True           # If False, skip quantum processing and load data from SAVE_PATH
+# np.random.seed(0)           # Seed for NumPy random number generator
+# tf.random.set_seed(0)       # Seed for TensorFlow random number generator
 
-## Load the data set
-mnist_dataset = keras.datasets.mnist
-(train_images, train_labels), (test_images, test_labels) = mnist_dataset.load_data()
+# ## Load the data set
+# mnist_dataset = keras.datasets.mnist
+# (train_images, train_labels), (test_images, test_labels) = mnist_dataset.load_data()
 
-# Reduce dataset size
-train_images = train_images[:n_train]
-train_labels = train_labels[:n_train]
-test_images = test_images[:n_test]
-test_labels = test_labels[:n_test]
+# # Reduce dataset size
+# train_images = train_images[:n_train]
+# train_labels = train_labels[:n_train]
+# test_images = test_images[:n_test]
+# test_labels = test_labels[:n_test]
 
-# Normalize pixel values within 0 and 1
-train_images = train_images / 255
-test_images = test_images / 255
+# # Normalize pixel values within 0 and 1
+# train_images = train_images / 255
+# test_images = test_images / 255
 
-# Add extra dimension for convolution channels
-train_images = np.array(train_images[..., tf.newaxis], requires_grad=False)
-test_images = np.array(test_images[..., tf.newaxis], requires_grad=False)
+
+# # Add extra dimension for convolution channels
+# train_images = np.array(train_images[..., tf.newaxis], requires_grad=False)
+# test_images = np.array(test_images[..., tf.newaxis], requires_grad=False)
 
 ## the jupyther notebook always has a better result for the quantum filter (moving the whole quantum circuit to mains experiment script)
+
+data = data_load()
+
+train_images, train_labels, test_images, test_labels = data.data_mnist()
+
+print(np.shape(train_images))
+
+print(n)
 
 dev = qml.device("default.qubit", wires=n_channels)
 # Random circuit parameters

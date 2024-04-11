@@ -12,9 +12,9 @@ from Data_load import data_load
 data = data_load()
 train_images, train_labels, test_images, test_labels = data.data_mnist()
 
-dev = qml.device("default.qubit", wires=n_channels)
+dev = qml.device("default.qubit", wires=data.n_channels)
 # Random circuit parameters
-rand_params = np.random.uniform(high=2 * np.pi, size=(n_layers, n_channels))
+rand_params = np.random.uniform(high=2 * np.pi, size=(data.n_layers, data.n_channels))
 
 @qml.qnode(dev)
 def circuit(phi):
@@ -23,14 +23,14 @@ def circuit(phi):
         qml.RY(np.pi * phi[j], wires=j)
 
     # Random quantum circuit
-    RandomLayers(rand_params, wires=list(range(n_channels)))
+    RandomLayers(rand_params, wires=list(range(data.n_channels)))
 
     # Measurement producing 4 classical output values
     return [qml.expval(qml.PauliZ(j)) for j in range(4)]
 
 def quanv(image):
     """Convolves the input image with many applications of the same quantum circuit."""
-    out = np.zeros((14, 14, n_channels))
+    out = np.zeros((14, 14, data.n_channels))
 
     # Loop over the coordinates of the top-left pixel of 2X2 squares
     for j in range(0, 28, 2):
@@ -58,7 +58,7 @@ def apply_filter(image, type ):
     for idx, img in enumerate(image):
         print("{}/{}        ".format(idx + 1, np.shape(image)[0]), end="\r")
         if type == 0:
-            filtered_images.append(filter.classic_filter(image=img, n_channels=n_channels))
+            filtered_images.append(filter.classic_filter(image=img, n_channels=data.n_channels))
         elif type == 1:
             # filtered_images.append(filter.quanv(image=img, n_channels=n_channels, n_layers=n_layers))
             filtered_images.append(quanv(img))
@@ -68,18 +68,18 @@ def apply_filter(image, type ):
 
  # apply the classical filter   
 
-if PREPROCESS == True:
+if data.PREPROCESS == True:
     filtered_train_images =  apply_filter(train_images, type=0)
     filtered_test_images = apply_filter(test_images, type=0)
 # Save pre-processed images
-    np.save(SAVE_PATH + "filtered_train_images.npy", filtered_train_images)
-    np.save(SAVE_PATH + "filtered_test_images.npy", filtered_test_images)
+    np.save(data.SAVE_PATH + "filtered_train_images.npy", filtered_train_images)
+    np.save(data.SAVE_PATH + "filtered_test_images.npy", filtered_test_images)
 
  # apply the quantum filter   
     q_train_images = apply_filter(train_images, type=1)
     q_test_images = apply_filter(test_images, type=1)
-    np.save(SAVE_PATH + "q_train_images.npy", q_train_images)
-    np.save(SAVE_PATH + "q_test_images.npy", q_test_images)
+    np.save(data.SAVE_PATH + "q_train_images.npy", q_train_images)
+    np.save(data.SAVE_PATH + "q_test_images.npy", q_test_images)
 
 
 def MyModel():
@@ -103,7 +103,7 @@ classical_filtered_history = classical_filtered_model.fit(
     train_labels,
     validation_data=(filtered_test_images, test_labels),
     batch_size=4,
-    epochs=n_epochs,
+    epochs=data.n_epochs,
     verbose=2,
 )
 
@@ -113,7 +113,7 @@ classical_history = classical_model.fit(
     train_labels,
     validation_data=(test_images, test_labels),
     batch_size=4,
-    epochs=n_epochs,
+    epochs=data.n_epochs,
     verbose=2,
 )
 
@@ -124,18 +124,18 @@ q_history = q_model.fit(
     train_labels,
     validation_data=(q_test_images, test_labels),
     batch_size=4,
-    epochs=n_epochs,
+    epochs=data.n_epochs,
     verbose=2,
 )
 
 #save the results as Json file
-with open(SAVE_PATH + 'q_history.json','w') as json_file:
+with open(data.SAVE_PATH + 'q_history.json','w') as json_file:
     json.dump(q_history.history, json_file)
 
-with open(SAVE_PATH + 'classical_filtered_history.json','w') as json_file:
+with open(data.SAVE_PATH + 'classical_filtered_history.json','w') as json_file:
     json.dump(classical_filtered_history.history, json_file)
 
-with open(SAVE_PATH + 'classical_history.json','w') as json_file:
+with open(data.SAVE_PATH + 'classical_history.json','w') as json_file:
     json.dump(classical_history.history, json_file)
 
-print(f'Experiment results saved {SAVE_PATH}')
+print(f'Experiment results saved {data.SAVE_PATH}')

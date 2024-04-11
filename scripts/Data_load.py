@@ -16,8 +16,8 @@ class data_load():
         self.n_train = config['TRAIN_IMAGES']    # Size of the train dataset
         self.n_test = config['TEST_IMAGES']     # Size of the test dataset
         self.n_channels = config['CHANNELS'] # Number of channels
-        self.is_reduced = config['DATA_REDUCTION']
-        self.reduction_ratio = config['REDUCTION_RATIO']
+        self.is_reduced = config['DATA_REDUCTION'] # its 0 (false) or 1 (True)
+        self.reduction_ratio = config['REDUCTION_RATIO'] # its between 0 and 1
 
         self.SAVE_PATH = config['SAVE_PATH']  # Data saving folder
         self.PREPROCESS = config['PREPROCESS']           # If False, skip quantum processing and load data from SAVE_PATH

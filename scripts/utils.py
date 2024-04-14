@@ -1,5 +1,8 @@
-
 import json
+from pennylane import numpy as np
+import pennylane as qml
+
+from Filters import Filters
 
 def choose_samples(train_images, train_labels, test_images, test_labels, reduction_ratio):
     """
@@ -33,3 +36,35 @@ def read_configurations(config_file):
     with open(config_file, 'r') as f:
         config = json.load(f)
     return config
+
+## apply the selected filter on an image
+def filter(image, type, n_channels, n_layers):
+    f = Filters(image, n_channels, n_layers)
+    if type == 0:
+        filtered_image  = f.geometry_filter()
+    elif type == 1:
+        kernel = np.random.rand(2, 2) # we can create a class including the different type of kernels, if required
+        filtered_image = f.convolution_filter(kernel=kernel)
+    elif type == 2:
+        filtered_image = f.quantum_conv_filter("random_layer")
+    elif type == 3:
+        filtered_image = f.quantum_conv_filter("cnot")    
+    return filtered_image
+
+## apply the filters for all images
+def apply_filter(images, type, n_channels, n_layers):
+    filtered_images = []
+    print("fitlered pre-processing of images, with type = {}".format(type))
+    
+    for idx, img in enumerate(images):
+        print("{}/{}        ".format(idx + 1, np.shape(images)[0]), end="\r")
+        filtered_images.append(filter(img, type, n_channels, n_layers))
+    
+    filtered_images = np.asarray(filtered_images)
+
+    return(filtered_images)
+
+def load_data(image_file):
+        """Loads the training data from .npy files."""
+        train_images = np.load(image_file)
+        return train_images

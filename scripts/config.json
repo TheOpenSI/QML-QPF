@@ -7,5 +7,9 @@
     "SAVE_PATH" : "../results/",
     "PREPROCESS" : 1,
     "DATA_REDUCTION": 1,
-    "REDUCTION_RATIO": 0.001
+    "REDUCTION_RATIO": 0.001,
+    "FILTER_TYPE": 0,
+    "POOLING_SIZE": 2,
+    "CLASSES": 10,
+    "BATCH_SIZE" : 4
     }

@@ -21,7 +21,13 @@ class data_load():
 
         self.SAVE_PATH = config['SAVE_PATH']  # Data saving folder
         self.PREPROCESS = config['PREPROCESS']           # If False, skip quantum processing and load data from SAVE_PATH
-            
+        
+        self.n_classes = config["CLASSES"] # represents number of classes in the data.
+    
+        
+        self.FILTER_TYPE = config["FILTER_TYPE"] # O means geometrical filter (rotation&trace), 1 means classical filter (conv&max_pooling), 2 means quantum (random), 3 means quantum (cnot) 
+        
+        self.batch_size = config["BATCH_SIZE"]
            
         return
     

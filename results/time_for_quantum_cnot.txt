@@ -1,1 +1,2 @@
-Time taken for the experiment: 35.93477964401245 seconds
+Time taken for filtering data: 33.694169759750366 seconds
+Time taken for training model: 3.058549642562866 seconds

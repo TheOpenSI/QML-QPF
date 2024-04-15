@@ -4,6 +4,8 @@ import pennylane as qml
 
 from Filters import Filters
 
+kernel = np.random.rand(2, 2) # we can create a class including the different type of kernels, if required
+
 def choose_samples(train_images, train_labels, test_images, test_labels, reduction_ratio):
     """
     Choose samples from the data based on specified ratios for training and testing sets.
@@ -43,12 +45,13 @@ def filter(image, type, n_channels, n_layers):
     if type == 0:
         filtered_image  = f.geometry_filter()
     elif type == 1:
-        kernel = np.random.rand(2, 2) # we can create a class including the different type of kernels, if required
         filtered_image = f.convolution_filter(kernel=kernel)
     elif type == 2:
         filtered_image = f.quantum_conv_filter("random_layer")
     elif type == 3:
-        filtered_image = f.quantum_conv_filter("cnot")    
+        filtered_image = f.quantum_conv_filter("cnot")
+    elif type == 4:
+        filtered_image = f.convolution_filter(kernel=kernel, pooling=False)
     return filtered_image
 
 ## apply the filters for all images

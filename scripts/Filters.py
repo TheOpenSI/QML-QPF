@@ -6,12 +6,14 @@ import math
 # from quantum_circuit import Quantum
 
 class Filters:
+    rand_params = np.random.uniform(high=2 * np.pi, size=(1, 4))
     def __init__(self, image, n_channels, n_layers):
     # Should add a config file
         self.image = image
         self.n_channels = n_channels
         self.n_layers = n_layers
         self.dev = qml.device("default.qubit", wires=4)  # Initialize a default.qubit device
+        
 
         return
     
@@ -86,7 +88,7 @@ class Filters:
     def quantum_conv_filter(self, q_type):
         image_height, image_width = self.image.shape[0], self.image.shape[1]
         
-        out = np.zeros((image_height // 2, image_width // 2, 4))
+        out = np.zeros((image_height // 2, image_width // 2, self.n_channels))
 
         for j in range(0, image_height, 2):
             for k in range(0, image_width, 2):
@@ -102,14 +104,13 @@ class Filters:
     
     
     def circuit(self, phi, q_type):
-        rand_params = np.random.uniform(high=2 * np.pi, size=(self.n_layers, 4))
         @qml.qnode(self.dev)
         def qnode():
-            for j in range(4):
+            for j in range(self.n_channels):
                 qml.RY(np.pi * phi[j], wires=j)
             
             if q_type == "random_layer":    
-                qml.templates.RandomLayers(rand_params, wires=list(range(self.n_channels)))
+                qml.templates.RandomLayers(Filters.rand_params, wires=list(range(self.n_channels)))
             elif q_type == "cnot":
                 qml.CNOT(wires=[1, 2])
                 qml.CNOT(wires=[0, 3])

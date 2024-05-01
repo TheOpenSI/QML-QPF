@@ -1,9 +1,6 @@
 FROM mcr.microsoft.com/devcontainers/miniconda:latest
 
-ENV NVIDIA_VISIBLE_DEVICES all
-ENV NVIDIA_DRIVER_CAPABILITIES all
-ENV NVIDIA_REQUIRE_CUDA "cuda>=12.0"
-ENV CONDA_OVERRIDE_CUDA="12.2"
+RUN conda init
 
 # Copy environment.yml (if found) to a temp location so we update the environment. Also
 # copy "noop.txt" so the COPY instruction does not fail if no environment.yml exists.

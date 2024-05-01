@@ -4,6 +4,8 @@ channels:
   - nvidia
 dependencies:
   - ipykernel
-  - tensorflow
+  - cuquantum-python
+  - tensorflow-gpu
   - pennylane
+  - pennylane-lightning-gpu
   - matplotlib

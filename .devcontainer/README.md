@@ -1,3 +1,5 @@
+
+[![Open in Dev Containers](https://img.shields.io/static/v1?label=Dev%20Containers&message=Open&color=blue&logo=visualstudiocode)](https://vscode.dev/redirect?url=vscode://ms-vscode-remote.remote-containers/cloneInVolume?url=https://github.com/TheOpenSI/QML-QPF)
 # Step by step guide on using DevContainer
 
 This is a set of steps for setting up a development environment.
@@ -35,6 +37,8 @@ You can also go to the extension's [homepage](https://marketplace.visualstudio.c
    ```
 
 ## Step 5: Open in DevContainer
+
+If you already have VS Code and Docker installed, you can click the badge above or [here](https://vscode.dev/redirect?url=vscode://ms-vscode-remote.remote-containers/cloneInVolume?url=https://github.com/TheOpenSI/QML-QPF) to get started. Clicking these links will cause VS Code to automatically install the Dev Containers extension if needed, clone the source code into a container volume, and spin up a dev container for use.
 
 1. In VSCode, use the Command Palette (`Ctrl+Shift+P` or `Cmd+Shift+P` on macOS) and run "Clone Repository in Container Volume..." then select "Clone a Repository from GitHub in a Container Volume"
 2. Search for TheOpenSI/QML-QPF and then select the branch you are working on or create a new branch.

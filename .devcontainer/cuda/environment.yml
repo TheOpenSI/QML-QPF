@@ -9,3 +9,4 @@ dependencies:
   - pennylane
   - pennylane-lightning-gpu
   - matplotlib
+prefix: /opt/conda/envs/QML-QPF

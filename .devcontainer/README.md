@@ -44,7 +44,7 @@ You can also go to the extension's [homepage](https://marketplace.visualstudio.c
 
 1. After opening the folder in a DevContainer, VSCode will start building the container. This process can take some time as it involves downloading necessary images and setting up the environment.
 2. You can monitor the progress in the VSCode terminal.
-3. (Optional) If you intend to use GPU resources, from the Command Palette Run Dev Containers: Reopen in Container select "QML-QPF - CUDA".
+3. (Optional) If you intend to use GPU resources, from the Command Palette Run Dev Containers: Reopen in Container select "cuda".
 
 
 ## Step 8: Build 

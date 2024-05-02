@@ -2,16 +2,12 @@
 // README at: https://github.com/devcontainers/templates/tree/main/src/miniconda
 {
 
-	"name": "QML-QPF-CUDA",
+	"name": "QML-QPF-CPU",
 	"build": { 
-		"context": "../../",
+		"context": "..",
 		"dockerfile": "Dockerfile"
 	},
 	
-	"runArgs": [
-		"--gpus",
-		"all"
-	],
 	"customizations": {
 		"vscode": {
 			"extensions": [

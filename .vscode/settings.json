@@ -1,6 +1,6 @@
 {
     "jupyter.kernels.excludePythonEnvironments": [
-        "/opt/conda/bin/python3.10",
+        "/opt/conda/bin/python",
         "/usr/bin/python3"
       ]
 }

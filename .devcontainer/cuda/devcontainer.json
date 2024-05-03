@@ -4,7 +4,7 @@
 
 	"name": "QML-QPF-CUDA",
 	"build": { 
-		"context": "../../",
+		"context": "../..",
 		"dockerfile": "Dockerfile"
 	},
 	

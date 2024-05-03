@@ -40,15 +40,17 @@ You can also go to the extension's [homepage](https://marketplace.visualstudio.c
 
 If you already have VS Code and Docker installed, you can click the badge above or [here](https://vscode.dev/redirect?url=vscode://ms-vscode-remote.remote-containers/cloneInVolume?url=https://github.com/TheOpenSI/QML-QPF) to get started. Clicking these links will cause VS Code to automatically install the Dev Containers extension if needed, clone the source code into a container volume, and spin up a dev container for use.
 
-1. In VSCode, use the Command Palette (`Ctrl+Shift+P` or `Cmd+Shift+P` on macOS) and run "Clone Repository in Container Volume..." then select "Clone a Repository from GitHub in a Container Volume"
-2. Search for TheOpenSI/QML-QPF and then select the branch you are working on or create a new branch.
+1. In VSCode, use the explore and select clone repository and select Clone from Github as repository source. Find TheOpenSI/QML-QPF choose it and select a location for the repository.
+2.  In the lower left status bar click on main and you will have the option to select the branch you are working on or create a new branch.
+3. In the Command Palette select Dev Containers: Open folder in Container... select the folder that you cloned the repository to.
+4. You should be presented with the option of a CPU or CUDA container, select CUDA if you intend to use GPU resources.
 
 
 ## Step 6: Building the Environment
 
 1. After opening the folder in a DevContainer, VSCode will start building the container. This process can take some time as it involves downloading necessary images and setting up the environment.
 2. You can monitor the progress in the VSCode terminal.
-3. (Optional) If you intend to use GPU resources, from the Command Palette Run Dev Containers: Reopen in Container select "cuda".
+3. (Optional) If you intend to use GPU resources, from the Command Palette Run Dev Containers: Switch Container select the container with cuda.
 
 
 ## Step 8: Build 

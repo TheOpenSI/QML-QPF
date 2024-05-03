@@ -23,22 +23,6 @@ RUN wget --quiet https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86
 # Put conda in path so we can use conda activate
 ENV PATH=$CONDA_DIR/bin:$PATH
 
-# ENV ANACONDA_ENV=qml_env
-
-# # Start as root
-# USER root
-
-# # Update packages
-# RUN apt-get update --fix-missing \
-#     && apt-get -y upgrade \
-#     && apt-get -y dist-upgrade
-
-# # Create the environment:
-# COPY environment.yml .
-# RUN conda env create -f environment.yml
-
-# # Make RUN commands use the new environment: 
-# SHELL ["conda", "run", "-n", "QML-QPF", "/bin/bash", "-c"]
 
 RUN conda init
 

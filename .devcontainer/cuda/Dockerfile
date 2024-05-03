@@ -1,9 +1,30 @@
-FROM mcr.microsoft.com/devcontainers/miniconda:latest
+# FROM mcr.microsoft.com/devcontainers/miniconda:latest
+
+FROM tensorflow/tensorflow:latest-gpu-jupyter
+
+# FROM xychelsea/tensorflow:latest-gpu-jupyter
 
 ENV NVIDIA_VISIBLE_DEVICES all
 ENV NVIDIA_DRIVER_CAPABILITIES all
 ENV NVIDIA_REQUIRE_CUDA "cuda>=12.0"
-ENV CONDA_OVERRIDE_CUDA="12.2"
+ENV CONDA_OVERRIDE_CUDA="12.4"
+
+# ENV ANACONDA_ENV=qml_env
+
+# Start as root
+USER root
+
+# Update packages
+RUN apt-get update --fix-missing \
+    && apt-get -y upgrade \
+    && apt-get -y dist-upgrade
+
+# # Create the environment:
+# COPY environment.yml .
+# RUN conda env create -f environment.yml
+
+# # Make RUN commands use the new environment:
+# SHELL ["conda", "run", "-n", "QML-QPF", "/bin/bash", "-c"]
 
 RUN conda init
 

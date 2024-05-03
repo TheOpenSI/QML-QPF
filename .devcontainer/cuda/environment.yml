@@ -5,7 +5,7 @@ channels:
 dependencies:
   - ipykernel
   - cuquantum-python
-  - tensorflow-gpu
+  - tensorflow
   - pennylane
   - pennylane-lightning-gpu
   - matplotlib

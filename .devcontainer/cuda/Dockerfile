@@ -3,7 +3,7 @@ FROM mcr.microsoft.com/devcontainers/miniconda:latest
 ENV NVIDIA_VISIBLE_DEVICES all
 ENV NVIDIA_DRIVER_CAPABILITIES all
 ENV NVIDIA_REQUIRE_CUDA "cuda>=12.0"
-ENV CONDA_OVERRIDE_CUDA="12.2"
+# ENV CONDA_OVERRIDE_CUDA="12.2"
 
 RUN conda init
 

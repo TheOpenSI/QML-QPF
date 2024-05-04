@@ -40,9 +40,9 @@ You can also go to the extension's [homepage](https://marketplace.visualstudio.c
 
 If you already have VS Code and Docker installed, you can click the badge above or [here](https://vscode.dev/redirect?url=vscode://ms-vscode-remote.remote-containers/cloneInVolume?url=https://github.com/TheOpenSI/QML-QPF) to get started. Clicking these links will cause VS Code to automatically install the Dev Containers extension if needed, clone the source code into a container volume, and spin up a dev container for use.
 
-1. In VSCode, use the explore and select clone repository and select Clone from Github as repository source. Find TheOpenSI/QML-QPF choose it and select a location for the repository.
-2.  In the lower left status bar click on main and you will have the option to select the branch you are working on or create a new branch.
-3. In the Command Palette select Dev Containers: Open folder in Container... select the folder that you cloned the repository to.
+1. In VSCode, use the explore and select clone repository and select Clone from Github as repository source. Find TheOpenSI/QML-QPF choose it and select a location for the repository. 
+2.  Open the cloned repository and in the lower left status bar click on main and you will have the option to select the branch you are working on or create a new branch.
+3. In the Command Palette select "Dev Containers: Rebuild and Reopen in Container" or "Dev Containers: Open folder in Container..." select the folder that you cloned the repository to.
 4. You should be presented with the option of a CPU or CUDA container, select CUDA if you intend to use GPU resources.
 
 
@@ -50,7 +50,7 @@ If you already have VS Code and Docker installed, you can click the badge above 
 
 1. After opening the folder in a DevContainer, VSCode will start building the container. This process can take some time as it involves downloading necessary images and setting up the environment.
 2. You can monitor the progress in the VSCode terminal.
-3. (Optional) If you intend to use GPU resources, from the Command Palette Run Dev Containers: Switch Container select the container with cuda.
+3. (Optional) If you intend to use GPU resources, from the Command Palette Run Dev Containers: Switch Container select the container with cuda. Test using tf.config.list_physical_devices('GPU')
 
 
 ## Step 8: Build 

@@ -1,12 +1,13 @@
 name: QML-QPF
 channels:
   - conda-forge
-  - nvidia
 dependencies:
   - ipykernel
-  - cuquantum-python
-  - tensorflow-gpu
-  - pennylane
-  - pennylane-lightning-gpu
-  - matplotlib
+  - matplotlib==3.8.4
+  - pip
+  - pip:
+    - tensorflow[and-cuda]==2.16.1
+    - pennylane==0.35.1
+    - pennylane-lightning-gpu==0.35.1
+
 prefix: /opt/conda/envs/QML-QPF

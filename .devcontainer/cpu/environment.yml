@@ -1,0 +1,12 @@
+name: QML-QPF
+channels:
+  - conda-forge
+  - defaults
+
+dependencies:
+  - python>=3.10
+  - anaconda::ipykernel
+  - tensorflow-cpu=2.15.0
+  - pennylane=0.35.1
+  - matplotlib=3.8.4
+prefix: /opt/conda/envs/QML-QPF

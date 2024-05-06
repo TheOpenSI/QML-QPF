@@ -1,2 +1,2 @@
-Time taken for filtering data: 2.651825189590454 seconds
-Time taken for training model: 3.070220470428467 seconds
+Time taken for filtering data: 2.5632095336914062 seconds
+Time taken for training model: 4.044312238693237 seconds

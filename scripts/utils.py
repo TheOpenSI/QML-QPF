@@ -61,6 +61,8 @@ def filter(image, type, n_channels, n_layers):
         filtered_image = f.quantum_conv_filter("full")
     elif type == 6:
         filtered_image = f.quantum_conv_filter("full_asc")
+    # elif type == 7:
+    #     filtered_image = f.quantum_conv_filter("no_cnot")
     return filtered_image
 
 # apply the filters for all images

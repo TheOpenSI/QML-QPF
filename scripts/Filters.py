@@ -8,6 +8,7 @@ import math
 
 class Filters:
     rand_params = np.random.uniform(high=2 * np.pi, size=(1, 4))
+    stride = 2
 
     def __init__(self, image, n_channels, n_layers):
         # Should add a config file
@@ -25,10 +26,11 @@ class Filters:
         # Get dimensions
         image_height, image_width = self.image.shape[0], self.image.shape[1]
 
+        # modify to incorporate padding
         out = np.zeros((image_height // 2, image_width // 2, self.n_channels))
         # Loop over the coordinates of the top-left pixel of 2X2 squares
-        for j in range(0, image_height, 2):
-            for k in range(0, image_width, 2):
+        for j in range(0, image_height, self.stride):
+            for k in range(0, image_width, self.stride):
                 # Process a squared 2x2 region of the image with a rotation matix and take the trace
                 results = []
                 for pixel in [self.image[j, k, 0], self.image[j, k + 1, 0], self.image[j + 1, k, 0], self.image[j + 1, k + 1, 0]]:
@@ -90,18 +92,24 @@ class Filters:
     def quantum_conv_filter(self, q_type):
         image_height, image_width = self.image.shape[0], self.image.shape[1]
 
-        out = np.zeros((image_height // 2, image_width // 2, self.n_channels))
+        # measure only 1 qubit if qubits are entangled
+        if q_type in ["full", "full_asc"]:
+            out = np.zeros((image_height // 2, image_width // 2, 1))
+        else:
+            out = np.zeros(
+                (image_height // 2, image_width // 2, self.n_channels))
 
-        for j in range(0, image_height, 2):
-            for k in range(0, image_width, 2):
+        for j in range(0, image_height, self.stride):
+            for k in range(0, image_width, self.stride):
                 q_results = self.circuit([self.image[j, k, 0],
                                           self.image[j, k + 1, 0],
                                           self.image[j + 1, k, 0],
                                           self.image[j + 1, k + 1, 0]],
                                          q_type
                                          )
-                for c in range(4):
-                    out[j // 2, k // 2, c] = q_results[c]
+
+                for c in range(len(q_results)):
+                    out[j // self.stride, k // self.stride, c] = q_results[c]
         return out
 
     def circuit(self, phi, q_type):
@@ -113,24 +121,32 @@ class Filters:
             if q_type == "random_layer":
                 qml.templates.RandomLayers(
                     Filters.rand_params, wires=list(range(self.n_channels)))
+                return [qml.expval(qml.PauliZ(j)) for j in range(self.n_channels)]
 
             # Filter from arxiv.org/abs/2308.14930
             elif q_type == "cnot":
                 qml.CNOT(wires=[1, 2])
                 qml.CNOT(wires=[0, 3])
+                return [qml.expval(qml.PauliZ(j)) for j in range(self.n_channels)]
 
             # filter with the missing CNOT gate added to the above filter to create full entanglement
             elif q_type == "full":
                 qml.CNOT(wires=[1, 2])
                 qml.CNOT(wires=[0, 3])
                 qml.CNOT(wires=[2, 3])
+                # measure only the last qubit since all are entangled
+                return [qml.expval(qml.PauliZ(self.n_channels-1))]
 
             # filter with full entanglement using different permutation of CNOT gates than the above filter
             elif q_type == "full_asc":
                 qml.CNOT(wires=[0, 1])
                 qml.CNOT(wires=[1, 2])
                 qml.CNOT(wires=[2, 3])
+                # measure only the last qubit since all are entangled
+                return [qml.expval(qml.PauliZ(self.n_channels-1))]
 
-            return [qml.expval(qml.PauliZ(j)) for j in range(self.n_channels)]
+            # return [qml.expval(qml.PauliZ(j)) for j in range(self.n_channels)]
+            # return qml.expval(qml.PauliZ(3))
 
+        # print(qml.draw(qnode)())
         return qnode()

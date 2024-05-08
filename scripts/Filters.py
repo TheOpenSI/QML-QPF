@@ -89,11 +89,11 @@ class Filters:
 
         return output
 
-    def quantum_conv_filter(self, q_type):
+    def quantum_conv_filter(self, q_type, meas_last=False):
         image_height, image_width = self.image.shape[0], self.image.shape[1]
 
-        # measure only 1 qubit if qubits are entangled
-        if q_type in ["full", "full_asc"]:
+        # measure only the last qubit (useful if all qubits are entangled)
+        if meas_last is True:
             out = np.zeros((image_height // 2, image_width // 2, 1))
         else:
             out = np.zeros(
@@ -105,14 +105,15 @@ class Filters:
                                           self.image[j, k + 1, 0],
                                           self.image[j + 1, k, 0],
                                           self.image[j + 1, k + 1, 0]],
-                                         q_type
+                                         q_type,
+                                         meas_last
                                          )
 
                 for c in range(len(q_results)):
                     out[j // self.stride, k // self.stride, c] = q_results[c]
         return out
 
-    def circuit(self, phi, q_type):
+    def circuit(self, phi, q_type, meas_last):
         @qml.qnode(self.dev)
         def qnode():
             for j in range(self.n_channels):
@@ -121,32 +122,28 @@ class Filters:
             if q_type == "random_layer":
                 qml.templates.RandomLayers(
                     Filters.rand_params, wires=list(range(self.n_channels)))
-                return [qml.expval(qml.PauliZ(j)) for j in range(self.n_channels)]
 
             # Filter from arxiv.org/abs/2308.14930
             elif q_type == "cnot":
                 qml.CNOT(wires=[1, 2])
                 qml.CNOT(wires=[0, 3])
-                return [qml.expval(qml.PauliZ(j)) for j in range(self.n_channels)]
 
             # filter with the missing CNOT gate added to the above filter to create full entanglement
             elif q_type == "full":
                 qml.CNOT(wires=[1, 2])
                 qml.CNOT(wires=[0, 3])
                 qml.CNOT(wires=[2, 3])
-                # measure only the last qubit since all are entangled
-                return [qml.expval(qml.PauliZ(self.n_channels-1))]
 
             # filter with full entanglement using different permutation of CNOT gates than the above filter
             elif q_type == "full_asc":
                 qml.CNOT(wires=[0, 1])
                 qml.CNOT(wires=[1, 2])
                 qml.CNOT(wires=[2, 3])
-                # measure only the last qubit since all are entangled
-                return [qml.expval(qml.PauliZ(self.n_channels-1))]
 
-            # return [qml.expval(qml.PauliZ(j)) for j in range(self.n_channels)]
-            # return qml.expval(qml.PauliZ(3))
+            if meas_last is True:    # measure only the last qubit if meas_last is set to True
+                return [qml.expval(qml.PauliZ(self.n_channels - 1))]
+            else:
+                return [qml.expval(qml.PauliZ(j)) for j in range(self.n_channels)]
 
         # print(qml.draw(qnode)())
         return qnode()

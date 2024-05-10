@@ -9,4 +9,5 @@ dependencies:
   - tensorflow-cpu=2.15.0
   - pennylane=0.35.1
   - matplotlib=3.8.4
+  - seaborn
 prefix: /opt/conda/envs/QML-QPF

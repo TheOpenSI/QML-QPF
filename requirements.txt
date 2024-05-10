@@ -1,3 +1,4 @@
 tensorflow==2.16.1
 PennyLane==0.35.1
 matplotlib==3.8.4
+seabornpip==0.13.2

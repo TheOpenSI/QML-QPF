@@ -9,5 +9,6 @@ dependencies:
     - tensorflow[and-cuda]==2.16.1
     - pennylane==0.35.1
     - pennylane-lightning-gpu==0.35.1
+    - seaborn
 
 prefix: /opt/conda/envs/QML-QPF

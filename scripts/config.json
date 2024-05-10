@@ -4,7 +4,7 @@
   "TRAIN_IMAGES": 60000,
   "TEST_IMAGES": 10000,
   "CHANNELS": 4,
-  "SAVE_PATH": "../results_2/",
+  "SAVE_PATH": "../results_3/",
   "PREPROCESS": 1,
   "DATA_REDUCTION": 1,
   "REDUCTION_RATIO": 1,

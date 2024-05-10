@@ -30,8 +30,8 @@ for t, type in types.items():
     # Compile the model
     my_model.compile_model()
 
-    train_images = load_data(data.SAVE_PATH + "filtered_train_images_{}.npy".format(type))
-    test_images = load_data(data.SAVE_PATH + "filtered_test_images_{}.npy".format(type))
+    train_images = load_data("../results_2/filtered_train_images_{}.npy".format(type))
+    test_images = load_data("../results_2/filtered_test_images_{}.npy".format(type))
 
     # # getting only the last channel to feed to the NN
     # train_images = train_images[:,:,:,-1]

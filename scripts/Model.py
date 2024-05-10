@@ -56,7 +56,7 @@ class Model:
         ax.set_title('Confusion matrix of Handwritten MNIST data set ' + ds_type)
         ax.set_xlabel('Predicted Action')
         ax.set_ylabel('Actual Action')
-        plt.xticks(rotation=90)
+        plt.xticks(rotation=0)
         plt.yticks(rotation=0)
         ax.xaxis.set_ticklabels(labels)
         ax.yaxis.set_ticklabels(labels)

@@ -19,8 +19,11 @@ types = {
     2: "quantum_random",
     3: "quantum_cnot",
     4: "classical_wo_pooling",
-    5: "full",
-    6: "full_asc"
+    5: "quantum_full",
+    6: "quantum_full_asc",
+    7: "quantum_no_cnot",
+    8: "quantum_cz",
+    9: "3x3_quantum_filter"
 }
 
 if data.PREPROCESS == True:
@@ -50,6 +53,9 @@ if data.PREPROCESS == True:
 n_classes = data.n_classes  # 10 for mnist dataset
 
 for t, type in types.items():
+    print()
+    print(type)
+    print()
     # Instantiate a Model class
     my_model = Model(n_classes=data.n_classes)  # 10 for mnist dataset)
     # Compile the model

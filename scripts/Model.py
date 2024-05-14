@@ -53,11 +53,11 @@ class Model:
         ax = sns.heatmap(cm, annot=True, fmt='g')
         sns.set(rc={'figure.figsize': (12, 12)})
         sns.set(font_scale=1.4)
-        ax.set_title(
-            'Confusion matrix of Handwritten MNIST data set ' + ds_type)
-        ax.set_xlabel('Predicted Action')
-        ax.set_ylabel('Actual Action')
-        plt.xticks(rotation=90)
+
+        ax.set_title('Confusion matrix of Handwritten MNIST data set ' + ds_type)
+        ax.set_xlabel('Predicted')
+        ax.set_ylabel('Actual')
+        plt.xticks(rotation=0)
         plt.yticks(rotation=0)
         ax.xaxis.set_ticklabels(labels)
         ax.yaxis.set_ticklabels(labels)

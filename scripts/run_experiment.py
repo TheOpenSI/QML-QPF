@@ -21,7 +21,9 @@ types = {
     4: "classical_wo_pooling",
     5: "quantum_full",
     6: "quantum_full_asc",
-    # 7: "quantum_no_cnot"
+    7: "quantum_no_cnot",
+    8: "quantum_cz",
+    9: "3x3_quantum_filter"
 }
 
 if data.PREPROCESS == True:

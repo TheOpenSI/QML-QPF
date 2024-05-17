@@ -161,7 +161,4 @@ cython_debug/
 
 # Local testing
 scripts/testPennylane.ipynb
-results_2/
-results_4/
-results/
-results_3/
+results_*/

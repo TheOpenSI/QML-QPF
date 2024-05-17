@@ -10,7 +10,7 @@ class data_load():
     def __init__(self,):
         # Read configurations from config.json
 
-        config = read_configurations('./config.json')
+        config = read_configurations('./experiment_params.json')
 
         self.n_epochs = config['EPOCHS']   # Number of optimization epochs
         self.n_layers = config['RNDM_LAYERS']    # Number of random layers

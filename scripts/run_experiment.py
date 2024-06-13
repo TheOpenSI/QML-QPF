@@ -13,12 +13,17 @@ import time
 data = data_load()
 train_images, train_labels, test_images, test_labels = data.data_mnist()
 
-types ={
-    0: "geometrical",
-    1: "classical_w_pooling",
-    2: "quantum_random",
-    3: "quantum_cnot",
-    4: "classical_wo_pooling"
+types = {
+    # 0: "geometrical",
+    # 1: "classical_w_pooling",
+    # 2: "quantum_random",
+    # 3: "quantum_cnot",
+    # 4: "classical_wo_pooling",
+    # 5: "quantum_full",
+    # 6: "quantum_full_asc",
+    7: "quantum_no_cnot",
+    8: "quantum_cz",
+    9: "3x3_quantum_filter"
 }
 
 if data.PREPROCESS == True:
@@ -67,9 +72,9 @@ for t, type in types.items():
                                             epochs = data.n_epochs)
     end_time = time.time()
     time_taken = end_time - start_time
-        # Save time taken to a text file
-    with open(data.SAVE_PATH + "time_for_{}.txt".format(type), "a") as file:
-        file.write("\nTime taken for training model: {} seconds".format(time_taken))
+    # Save time taken to a text file
+    with open(data.SAVE_PATH + "training_times", "a") as file:
+        file.write( f' Model_filter: {type}, Time: {time_taken}' )
     # save model history
     with open(data.SAVE_PATH + "model_{}.json".format(type),'w') as json_file:
         json.dump(model_history.history, json_file)

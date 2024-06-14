@@ -11,5 +11,5 @@
   "FILTER_TYPE": 0,
   "POOLING_SIZE": 2,
   "CLASSES": 10,
-  "BATCH_SIZE": 4
+  "BATCH_SIZE": 24
 }

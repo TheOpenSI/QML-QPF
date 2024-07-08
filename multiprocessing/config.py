@@ -1,5 +1,16 @@
 
-from utils import read_configurations
+import json
+from pennylane import numpy as np 
+import tensorflow as tf
+
+np.random.seed(0)           # Seed for NumPy random number generator
+tf.random.set_seed(0)       # Seed for TensorFlow random number generator
+
+def read_configurations(config_file):
+    with open(config_file, 'r') as f:
+        config = json.load(f)
+    return config
+
 
 config = read_configurations('./config.json')
 
@@ -22,7 +33,24 @@ n_classes = config["CLASSES"]
 FILTER_TYPE = config["FILTER_TYPE"]
 
 batch_size = config["BATCH_SIZE"]
+n_batches = config["BATCH_SIZE"]
+
+rand_params = np.random.uniform(high=2 * np.pi, size=(n_layers, 4))
+
+n_qubits = 4
 
 
+
+datasets = {
+    0 : "MNIST",
+    1 : "FASHIONMNIST"
+}
+
+filters = {
+    0 : "no_filter",
+    1 : "qrand",
+    2 : "qcnot",
+    3 : "qentcnot"
+}
 
 

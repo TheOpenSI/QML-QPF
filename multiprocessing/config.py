@@ -39,7 +39,7 @@ rand_params = np.random.uniform(high=2 * np.pi, size=(n_layers, 4))
 
 n_qubits = 4
 
-
+memory_limit = 3000
 
 datasets = {
     0 : "MNIST",

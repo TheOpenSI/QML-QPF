@@ -3,7 +3,7 @@ FROM mcr.microsoft.com/devcontainers/miniconda:latest
 ENV NVIDIA_VISIBLE_DEVICES all
 ENV NVIDIA_DRIVER_CAPABILITIES all
 ENV NVIDIA_REQUIRE_CUDA "cuda>=12.0"
-# ENV CONDA_OVERRIDE_CUDA="12.2"
+ENV CONDA_OVERRIDE_CUDA="12.2"
 
 
 # [Optional] Uncomment this section to install additional OS packages.
@@ -25,7 +25,9 @@ RUN conda init
 # copy "noop.txt" so the COPY instruction does not fail if no environment.yml exists.
 COPY .devcontainer/cuda/environment.yml* .devcontainer/noop.txt /tmp/conda-tmp/
 RUN if [ -f "/tmp/conda-tmp/environment.yml" ]; then umask 0002 && /opt/conda/bin/conda env create -n QML-QPF -f /tmp/conda-tmp/environment.yml; fi \
-    && rm -rf /tmp/conda-tmp
+    && rm -rf /tmp/conda-tmp \
+    && conda install -n QML-QPF -c rapidsai -c conda-forge -c nvidia -y rapids=24.06 \
+    && sudo chmod -R 755 /opt/conda/envs/QML-QPF
 
 # [Optional] Uncomment to install a different version of Python than the default
 # RUN conda install -y python=3.6 \

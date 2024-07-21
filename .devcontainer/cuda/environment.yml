@@ -2,6 +2,7 @@ name: QML-QPF
 channels:
   - default
 dependencies:
+  - python=3.10.*
   - pip
   - pip:
     - tensorflow[and-cuda]==2.16.1
@@ -9,5 +10,6 @@ dependencies:
     - ipykernel==6.29.5
     - matplotlib==3.8.4
     - seaborn
+    - umap-learn
 
 prefix: /opt/conda/envs/QML-QPF

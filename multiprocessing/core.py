@@ -9,17 +9,24 @@ import os
 
 
 
-class model():
+class Model():
 
     def __init__(self, data, filter, clock_start, workdir):
+        workdir = workdir + "/output"
         self.data = data
         self.filter = filter
         self.model_name = cf.datasets[self.data]+cf.filters[self.filter]
-        self.workdir = workdir
+        self.workdir = workdir + "/output"
         self.log_dir = workdir + "/" + clock_start + "/runs/" + cf.datasets[self.data] + "/" + self.model_name
         self.data_dir = workdir + "/" + clock_start + "/data/" + cf.datasets[self.data] + "/" + self.model_name
-        self.model_dir = workdir + "/" + clock_start + "/runs/" + cf.datasets[self.data] + "/" + self.model_name + "/train/" + f'keras_embedding.ckpt-{cf.n_epochs-1}.weights.h5'
-
+        self.model_dir = self.log_dir + "/train/" 
+        self.visuals_dir = workdir + "/" + clock_start + "/visuals/" 
+        if data == 0:
+            self.class_labels = ["Zero","One","Two","Three", "Four",
+                "Five", "Six", "Seven", "Eight", "Nine"]
+        else:
+            self.class_labels = ['T-shirt/top', 'Trouser', 'Pullover', 'Dress', 'Coat',
+               'Sandal', 'Shirt', 'Sneaker', 'Bag', 'Ankle boot']
         self.tensorboard_callback = keras.callbacks.TensorBoard(
             log_dir=self.log_dir,
             histogram_freq=1,
@@ -38,7 +45,25 @@ class model():
         self.pre_train_images = np.load(os.path.join(self.data_dir, 'filtered_train_images.npy'))
         self.pre_test_images = np.load(os.path.join(self.data_dir, 'filtered_test_images.npy'))
         self.q_model = self.Q_Model()
-        self.q_model.load_weights(self.model_dir)
+        self.q_model.predict(self.pre_test_images)
+        self.q_model.load_weights(self.model_dir + f'keras_embedding.ckpt-{cf.n_epochs-1}.weights.h5')
+
+    def load_history(self):
+        import numpy as np
+        bias = []
+        weights = []
+        self.restore()
+        for num in range(cf.n_epochs):
+            file = self.model_dir  + f'keras_embedding.ckpt-{num}.weights.h5'
+            self.q_model.load_weights(file)
+            layer = self.q_model.get_layer(index=2)
+            extract = layer.get_weights()
+            weights += [np.asarray(extract[0])]
+            bias += [np.asarray(extract[1])]
+        self.bias = np.asarray(bias)
+        self.weights = np.asarray(weights)
+        
+
     
 
     def save_filtered(self):
@@ -88,7 +113,20 @@ class model():
     def pre_filter(self):
         self.pre_train_images = self.pre_model.predict(self.train_images,batch_size=cf.n_batches)
         self.pre_test_images = self.pre_model.predict(self.test_images,batch_size=cf.n_batches)
-
+    
+    @property
+    @keras.utils.register_keras_serializable()
+    def flatten(self):
+        flattening = keras.models.Sequential([
+            keras.layers.Rescaling(scale=1./127.5, offset=-1),
+            keras.layers.Flatten()
+        ])
+        flattening.compile(
+            optimizer='adam',
+            loss="sparse_categorical_crossentropy",
+            metrics=["accuracy"]
+        )
+        return flattening
 
 
     @keras.utils.register_keras_serializable()
@@ -141,4 +179,8 @@ class model():
             verbose=2,
             callbacks=[self.tensorboard_callback]
         )
-
+    @property
+    def visuals(self):
+        from visualizations import Visualize
+        this_visuals = Visualize(self)
+        return this_visuals

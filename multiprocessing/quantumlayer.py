@@ -16,7 +16,7 @@ class QuantumLayer(keras.layers.Layer):
         dev = qml.device("default.qubit.tf", wires=cf.n_qubits)
         self.q_node = qn.get_qrand_node(dev)
 
-    def prep_quantumlayer(self, q_node: function):
+    def prep_quantumlayer(self, q_node):
         """Set the quantum circuit being used in preprocessing .
 
         Args:

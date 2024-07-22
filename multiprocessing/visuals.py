@@ -3,9 +3,12 @@ from matplotlib.animation import ArtistAnimation, FuncAnimation, PillowWriter
 from matplotlib.image import AxesImage
 import numpy as np
 import tensorflow as tf
-from core import Model
+from typing import TYPE_CHECKING
+if TYPE_CHECKING:
+    from core import Model
 import os
 import config as cf
+from typing import Callable
 
 def reassembled(input: np.ndarray) -> np.ndarray:
     """Reassemble the input tensors .
@@ -30,17 +33,17 @@ class Visualize:
         this = model
         this.bias = this.bias.reshape([30,1,10])
 
-    def individual(self, history: np.ndarray) -> tuple[plt.Figure, list[plt.Axes]]:
+    def individual(self, history: np.ndarray) -> tuple[plt.Figure, Callable[[int],list[AxesImage]]]:
         """scene builder displays classes in individual matrices .
 
         Args:
             history (np.ndarray): array of matrices, matrices are shaped like the preprocessed dataset
 
         Returns:
-            tuple[plt.Figure, list[plt.Axes]]: [description]
+            tuple[plt.Figure, function]: pass to animation
         """        
         figure, ax = plt.subplots(nrows=3, ncols=3, figsize=(12, 12))
-        def animate(index):
+        def animate(index:int) -> list[AxesImage]:
             index -= 5
             if index < 0:
                 index = 0
@@ -59,7 +62,7 @@ class Visualize:
             return scene
         return figure, animate
     
-    def relative(self, history: np.ndarray) -> tuple[plt.Figure, function]:
+    def relative(self, history: np.ndarray) -> tuple[plt.Figure, Callable[[int],list[AxesImage]]]:
         """scene builder combines classes in a single matrix to view the classes at relative scale .
 
         Args:
@@ -89,7 +92,14 @@ class Visualize:
             return [ax.imshow(final)]
         return figure, animate
     
-    def animating(self, figure: plt.Figure, animate: function, name: str):
+    def animating(self, figure: plt.Figure, animate: Callable[[int],list[AxesImage]], name: str):
+        """builds the animation .
+
+        Args:
+            figure (plt.Figure): figure to write to
+            animate (function): scene builder to animate
+            name (str): name for tittle and save file
+        """        
         figure.suptitle(cf.datasets[this.data] + this.model_name + " " + name)
         visuals_dir = this.visuals_dir + name + "/"
         os.makedirs(visuals_dir, exist_ok=True)
@@ -236,6 +246,7 @@ class Visualize:
         import umap
         import umap.plot
         import pandas as pd
+        from bokeh.io import save
         flattened = this.flatten.predict(this.pre_train_images)
         category_labels = [this.class_labels[x] for x in this.train_labels]
         hover_df = pd.DataFrame(category_labels, columns=['category'])
@@ -250,9 +261,12 @@ class Visualize:
         embedding = reducer.fit_transform(flattened,this.test_labels)
         visuals_dir = this.visuals_dir + "UMAP" + "/"
         os.makedirs(visuals_dir, exist_ok=True)
-        file = visuals_dir + cf.datasets[this.data] + this.model_name + ".png"
+        file = visuals_dir + cf.datasets[this.data] + this.model_name + ".html"
         print(file) 
-        figure, ax = plt.subplots(nrows=1, ncols=1, figsize=(12, 12))
-        umap.plot.points(reducer, labels=hover_df['category'], ax=ax)
-        figure.suptitle(cf.datasets[this.data] + this.model_name)
-        figure.savefig(file)
+        title = cf.datasets[this.data] + this.model_name
+        umap.plot.output_file(file, title = title)
+        #figure, ax = plt.subplots(nrows=1, ncols=1, figsize=(12, 12))
+        bkp = umap.plot.interactive(reducer, labels=hover_df['category'],hover_data=hover_df,point_size=4)
+        save(bkp)
+        #figure.suptitle(cf.datasets[this.data] + this.model_name)
+        #figure.savefig(file)

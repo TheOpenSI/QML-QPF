@@ -1,12 +1,21 @@
 import matplotlib.pyplot as plt
 from matplotlib.animation import ArtistAnimation, FuncAnimation, PillowWriter
+from matplotlib.image import AxesImage
 import numpy as np
 import tensorflow as tf
 from core import Model
 import os
 import config as cf
 
-def reassembled(input):
+def reassembled(input: np.ndarray) -> np.ndarray:
+    """Reassemble the input tensors .
+
+    Args:
+        input (np.ndarray): [description]
+
+    Returns:
+        np.ndarray: [description]
+    """    
     reassembled_pt1 = lambda square: tf.reshape(
         tf.vectorized_map(lambda inp: tf.transpose(inp),tf.transpose(square)),[2,14,2,14])
     reassemble = lambda square: tf.reshape(
@@ -14,14 +23,22 @@ def reassembled(input):
     return reassemble(input)
 
 class Visualize:
-    this: Model = None
+    this: 'Model'
 
-    def __init__(self,model):
+    def __init__(self,model:'Model'):
         global this
         this = model
         this.bias = this.bias.reshape([30,1,10])
 
-    def individual(self, history):
+    def individual(self, history: np.ndarray) -> tuple[plt.Figure, list[plt.Axes]]:
+        """scene builder displays classes in individual matrices .
+
+        Args:
+            history (np.ndarray): array of matrices, matrices are shaped like the preprocessed dataset
+
+        Returns:
+            tuple[plt.Figure, list[plt.Axes]]: [description]
+        """        
         figure, ax = plt.subplots(nrows=3, ncols=3, figsize=(12, 12))
         def animate(index):
             index -= 5
@@ -42,10 +59,18 @@ class Visualize:
             return scene
         return figure, animate
     
-    def relative(self, history):
+    def relative(self, history: np.ndarray) -> tuple[plt.Figure, function]:
+        """scene builder combines classes in a single matrix to view the classes at relative scale .
+
+        Args:
+            history (np.ndarray): array of matrices, matrices are shaped like the preprocessed dataset
+
+        Returns:
+            tuple[plt.Figure, function]: pass to animation
+        """        
         figure, ax = plt.subplots(nrows=1, ncols=1, figsize=(12, 12))
 
-        def animate(indx):
+        def animate(indx: int) -> list[AxesImage]:
             indx -= 5
             if indx < 0:
                 indx = 0
@@ -64,7 +89,7 @@ class Visualize:
             return [ax.imshow(final)]
         return figure, animate
     
-    def animating(self, figure, animate, name):
+    def animating(self, figure: plt.Figure, animate: function, name: str):
         figure.suptitle(cf.datasets[this.data] + this.model_name + " " + name)
         visuals_dir = this.visuals_dir + name + "/"
         os.makedirs(visuals_dir, exist_ok=True)
@@ -193,7 +218,8 @@ class Visualize:
         figure.savefig(file)
 
     def relative_samples(self):
-
+        """Plot the samples in single matrix to view the scale of the samples as a whole.
+        """        
         sample = np.unique(this.test_labels, return_index=True)
         figure, _ = self.relative([this.pre_test_images[sample[1],...]])
         visuals_dir = this.visuals_dir + "relative_samples" + "/"
@@ -204,6 +230,8 @@ class Visualize:
         figure.savefig(file)
 
     def manifold_umap(self):
+        """Generate a UMAP plot .
+        """        
         from cuml.manifold.umap import UMAP
         import umap
         import umap.plot

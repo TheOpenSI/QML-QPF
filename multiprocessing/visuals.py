@@ -270,3 +270,14 @@ class Visualize:
         save(bkp)
         #figure.suptitle(cf.datasets[this.data] + this.model_name)
         #figure.savefig(file)
+
+    def circuit(self):
+        import pennylane as qml
+        if hasattr(this,'q_node'):
+            visuals_dir = this.visuals_dir + "circuits" + "/"
+            os.makedirs(visuals_dir, exist_ok=True)
+            file = visuals_dir + cf.datasets[this.data] + this.model_name + ".png"
+            print(file)
+            fig, ax = qml.draw_mpl(this.q_node,expansion_strategy="device")(np.asarray([0.1,0.1,0.1,0.1]))
+            fig.suptitle(cf.datasets[this.data] + this.model_name)
+            fig.savefig(file)

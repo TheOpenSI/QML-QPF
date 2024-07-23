@@ -124,18 +124,18 @@ class Model():
         if self.filter == 0:
             self.qlayer = ql.BasicLayer()
         else:
-            dev = qml.device("default.qubit.tf", wires=cf.n_qubits)
+            self.dev = qml.device("default.qubit.tf", wires=cf.n_qubits)
             if self.filter == 3:
-                self.qnode = qn.get_qentcnot_node(dev)
+                self.q_node = qn.get_qentcnot_node(self.dev)
 
             elif self.filter == 2:
-                self.qnode = qn.get_qcnot_node(dev)
+                self.q_node = qn.get_qcnot_node(self.dev)
 
             else:
-                self.qnode = qn.get_qrand_node(dev)
+                self.q_node = qn.get_qrand_node(self.dev)
 
             self.qlayer = ql.QuantumLayer()
-            self.qlayer.prep_quantumlayer(self.qnode)
+            self.qlayer.prep_quantumlayer(self.q_node)
 
         self.pre_model = self.Pre_Model()
     

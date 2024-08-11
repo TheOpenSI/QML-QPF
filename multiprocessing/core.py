@@ -12,7 +12,7 @@ from visuals import Visualize
 
 class Model(): 
 
-    def __init__(self, data:int, filter:int, clock_start:str, workdir:str):
+    def __init__(self, data:int, filter:int, clock_start:str, workdir:str,cnot_variant=[], ent_variant=[]):
         """Initialize the core model .
 
         Args:
@@ -20,17 +20,25 @@ class Model():
             filter (int): index for which quantum circuit to use refers to config file
             clock_start (str): unique identifier for this run
             workdir (str): directory to save and load from
-        """        
-        workdir = workdir + "/output"
+        """   
+        self.workdir = workdir + "/output"
         self.data = data
         self.filter = filter
-        self.model_name = cf.datasets[self.data]+cf.filters[self.filter]
-        self.workdir = workdir + "/output"
-        self.log_dir = workdir + "/" + clock_start + "/runs/" + cf.datasets[self.data] + "/" + self.model_name
-        self.data_dir = workdir + "/" + clock_start + "/data/" + cf.datasets[self.data] + "/" + self.model_name
+        if len(ent_variant) > 0:
+            self.model_name = cf.datasets[self.data]+cf.filters[self.filter] + '-'.join(cnot_variant.astype(str)) + "--" + '-'.join(str(ev) for ev in ent_variant)
+        elif len(cnot_variant) > 0:
+            self.model_name = cf.datasets[self.data]+cf.filters[self.filter] + '-'.join(cnot_variant.astype(str))
+        else:
+            self.model_name = cf.datasets[self.data]+cf.filters[self.filter]
+        self.init_helper(clock_start)
+
+
+    def init_helper(self, clock_start:str): 
+        self.log_dir = self.workdir + "/" + clock_start + "/runs/" + cf.datasets[self.data] + "/" + self.model_name
+        self.data_dir = self.workdir + "/" + clock_start + "/data/" + cf.datasets[self.data] + "/" + self.model_name
         self.model_dir = self.log_dir + "/train/" 
-        self.visuals_dir = workdir + "/" + clock_start + "/visuals/" 
-        if data == 0:
+        self.visuals_dir = self.workdir + "/" + clock_start + "/visuals/" 
+        if self.data == 0:
             self.class_labels = ["Zero","One","Two","Three", "Four",
                 "Five", "Six", "Seven", "Eight", "Nine"]
         else:
@@ -117,6 +125,29 @@ class Model():
         self.train_labels = train_labels
         self.test_images = test_images
         self.test_labels = test_labels
+
+
+    def prep_cnot_variant(self, cnot_variant):
+        self.dev = qml.device("default.qubit.tf", wires=cf.n_qubits)
+        self.q_node = qn.get_qcnot_node_variant(self.dev, *cnot_variant)
+        self.qlayer = ql.QuantumLayer()
+        self.qlayer.prep_quantumlayer(self.q_node)
+        self.pre_model = self.Pre_Model()
+
+    def prep_ent_cnot_variant(self, cnot_variant, ent_variant):
+        self.dev = qml.device("default.qubit.tf", wires=cf.n_qubits)
+        self.q_node = qn.get_ent_qcnot_node_variant(self.dev, *cnot_variant, *ent_variant)
+        self.qlayer = ql.QuantumLayer()
+        self.qlayer.prep_quantumlayer(self.q_node)
+        self.pre_model = self.Pre_Model()
+
+    def prep_qrand_variant(self, cnot_variant, ent_variant):
+        self.dev = qml.device("default.qubit.tf", wires=cf.n_qubits)
+        seed = cnot_variant[0] * ent_variant[0]
+        self.q_node = qn.get_qrand_node_variant(self.dev, seed)
+        self.qlayer = ql.QuantumLayer()
+        self.qlayer.prep_quantumlayer(self.q_node)
+        self.pre_model = self.Pre_Model()
 
     def prep(self):
         """This method is used to prepare a QML layer .

@@ -41,7 +41,6 @@ class QuantumLayer(keras.layers.Layer):
         #unpack 14x14 row by row
         list_squares_2x2 = lambda image_subsections: tf.reshape(tf.unstack(image_subsections, axis = 1), [196,4])
 
-
         #send 4 values to quantum function
         process_square_2x2 = lambda square_2x2 : self.q_node(square_2x2)
 

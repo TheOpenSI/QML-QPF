@@ -117,8 +117,10 @@ class Visualize:
         display[:] = np.nan
         figure, ax = plt.subplots(nrows=3, ncols=4, figsize=(12, 12))
         gs = ax[0,1].get_gridspec()
+        [[a.axis('off') for a in x] for x in ax]
         [[a.remove() for a in x[1:3]] for x in ax[0:2]]
         bax = figure.add_subplot(gs[0:2,1:3])
+        bax.axis('off')
         tittle = (cf.datasets[this.data] + this.model_name + " preprocessing")
         stage = []
         scene = []
@@ -219,11 +221,12 @@ class Visualize:
     def data_samples(self):
 
         sample = np.unique(this.test_labels, return_index=True)
-        figure, _ = self.individual([this.pre_test_images[sample[1],...]])
+        figure, builder = self.individual([this.pre_test_images[[sample[1]],...].T])
+        ims = builder(0)
         visuals_dir = this.visuals_dir + "individual_samples" + "/"
         os.makedirs(visuals_dir, exist_ok=True)
         file = visuals_dir + cf.datasets[this.data] + this.model_name + ".png"
-        print(file) 
+        print(file)
         figure.suptitle(cf.datasets[this.data] + this.model_name + " individual samples")
         figure.savefig(file)
 
@@ -231,7 +234,8 @@ class Visualize:
         """Plot the samples in single matrix to view the scale of the samples as a whole.
         """        
         sample = np.unique(this.test_labels, return_index=True)
-        figure, _ = self.relative([this.pre_test_images[sample[1],...]])
+        figure, builder = self.relative([this.pre_test_images[sample[1],...].T])
+        ims = builder(0)
         visuals_dir = this.visuals_dir + "relative_samples" + "/"
         os.makedirs(visuals_dir, exist_ok=True)
         file = visuals_dir + cf.datasets[this.data] + this.model_name + ".png"

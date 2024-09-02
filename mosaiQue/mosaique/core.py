@@ -13,7 +13,7 @@ from mosaique.visuals import Visualize
 class Model_():
 
     def __init__(self, data: int, filter: int, clock_start: str, workdir: str):
-        """Initialize the core model .
+        """Initialize the core models .
 
         Args:
             data (int): index for dataset refers to config file
@@ -59,7 +59,7 @@ class Model_():
         self.q_model.load_weights(self.model_dir + f'keras_embedding.ckpt-{cf.n_epochs - 1}.weights.h5')
 
     def load_history(self):
-        """load model history
+        """load models history
         restore history from an existing fit.
         """
         import numpy as np
@@ -141,8 +141,8 @@ class Model_():
 
     @property
     @keras.utils.register_keras_serializable()
-    def flatten(self) -> keras.Model_:
-        """Create a Keras model with only the flatten layer.
+    def flatten(self) -> keras.Model:
+        """Create a Keras models with only the flatten layer.
 
         Returns:
             keras.Model: [description]
@@ -159,8 +159,8 @@ class Model_():
         return flattening
 
     @keras.utils.register_keras_serializable()
-    def Pre_Model(self) -> keras.Model_:
-        """Initializes and returns a custom keras model used to preprocess images .
+    def Pre_Model(self) -> keras.Model:
+        """Initializes and returns a custom keras models used to preprocess images .
 
         Returns:
             keras.Model: [description]
@@ -183,11 +183,11 @@ class Model_():
         )
         return this_model
 
-    # core model
+    # core models
 
     @keras.utils.register_keras_serializable()
-    def Q_Model(self) -> keras.Model_:
-        """Initializes and returns a custom keras model ready to train on preprocessed images
+    def Q_Model(self) -> keras.Model:
+        """Initializes and returns a custom keras models ready to train on preprocessed images
 
         Returns:
             keras.Model: [description]
@@ -205,7 +205,7 @@ class Model_():
         return this_model
 
     def fit(self):
-        """Fit the model
+        """Fit the models
         Will train on preprocessed images. Preprocessing must be done first.
         """
         self.q_model = self.Q_Model()

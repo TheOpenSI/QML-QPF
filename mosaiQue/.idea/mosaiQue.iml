@@ -5,6 +5,10 @@
     <orderEntry type="jdk" jdkName="QML-QPF" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
+  <component name="PackageRequirementsSettings">
+    <option name="versionSpecifier" value="Strong equality (==x.y.z)" />
+    <option name="keepMatchingSpecifier" value="false" />
+  </component>
   <component name="PyDocumentationSettings">
     <option name="format" value="GOOGLE" />
     <option name="myDocStringFormat" value="Google" />

@@ -104,8 +104,8 @@ class Filters:
         for j in range(0, image_height, self.stride):
             for k in range(0, image_width, self.stride):
                 q_results = self.circuit([self.image[j, k, 0],
-                                          self.image[j, k + 1, 0],
                                           self.image[j + 1, k, 0],
+                                          self.image[j, k + 1, 0],
                                           self.image[j + 1, k + 1, 0]],
                                          q_type,
                                          meas_last

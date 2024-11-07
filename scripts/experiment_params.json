@@ -1,10 +1,10 @@
 {
   "EPOCHS": 30,
   "RNDM_LAYERS": 1,
-  "TRAIN_IMAGES": 60000,
-  "TEST_IMAGES": 10000,
+  "TRAIN_IMAGES": 6,
+  "TEST_IMAGES": 1,
   "CHANNELS": 4,
-  "SAVE_PATH": "../results_5/",
+  "SAVE_PATH": "../results_test/",
   "PREPROCESS": 1,
   "DATA_REDUCTION": 1,
   "REDUCTION_RATIO": 1,

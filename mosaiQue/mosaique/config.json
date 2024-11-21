@@ -4,12 +4,12 @@
   "TRAIN_IMAGES": 60000,
   "TEST_IMAGES": 10000,
   "CHANNELS": 4,
-  "SAVE_PATH": "../results/",
+  "SAVE_PATH": "../results_4/",
   "PREPROCESS": 1,
   "DATA_REDUCTION": 1,
-  "REDUCTION_RATIO": 0.001,
+  "REDUCTION_RATIO": 1,
   "FILTER_TYPE": 0,
   "POOLING_SIZE": 2,
   "CLASSES": 10,
-  "BATCH_SIZE": 512
+  "BATCH_SIZE": 124
 }

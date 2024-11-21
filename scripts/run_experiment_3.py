@@ -53,7 +53,7 @@ for t, type in types.items():
     # save model history
     with open(data.SAVE_PATH + "model_{}.json".format(type), 'w') as json_file:
         json.dump(model_history.history, json_file)
-    
+    # saving keras models for future predictions
     my_model.model.save(data.SAVE_PATH + "model_{}.keras".format(type))
 
 

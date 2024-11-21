@@ -1,14 +1,16 @@
 import pennylane as qml
-from pennylane import numpy as np 
+from pennylane import numpy as np
 from pennylane.templates import RandomLayers
-import config as cf
+
+import mosaique.config as cf
+
 
 def get_qcnot_node(dev):
     @qml.qnode(dev, interface='tf')
     def qcnot_node(inputs):
         inputs *= np.pi
         # Encoding of 4 classical input values
-        #Further testing of the AngleEmbedding function is needed
+        # Further testing of the AngleEmbedding function is needed
         qml.AngleEmbedding(inputs, wires=range(cf.n_qubits), rotation='Y')
         # Filter from arxiv.org/abs/2308.14930
 
@@ -17,7 +19,9 @@ def get_qcnot_node(dev):
 
         # Measurement producing 4 classical output values
         return [qml.expval(qml.PauliZ(j)) for j in range(cf.n_qubits)]
+
     return qcnot_node
+
 
 def get_qentcnot_node(dev):
     @qml.qnode(dev, interface='tf')
@@ -32,14 +36,16 @@ def get_qentcnot_node(dev):
 
         # Measurement producing 4 classical output values
         return [qml.expval(qml.PauliZ(j)) for j in range(cf.n_qubits)]
+
     return qentcnot_node
+
 
 def get_qrand_node(dev):
     @qml.qnode(dev, interface='tf')
     def qrand_node(inputs):
         inputs *= np.pi
         # Encoding of 4 classical input values
-        #Further testing of the AngleEmbedding function is needed
+        # Further testing of the AngleEmbedding function is needed
         qml.AngleEmbedding(inputs, wires=range(cf.n_qubits), rotation='Y')
         # Filter from arxiv.org/abs/2308.14930
 
@@ -47,5 +53,5 @@ def get_qrand_node(dev):
 
         # Measurement producing 4 classical output values
         return [qml.expval(qml.PauliZ(j)) for j in range(cf.n_qubits)]
-    return qrand_node
 
+    return qrand_node

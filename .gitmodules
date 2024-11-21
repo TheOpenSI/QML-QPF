@@ -1,0 +1,3 @@
+[submodule "mosaiQue"]
+	path = mosaiQue
+	url = https://github.com/Using-Namespace-System/mosaiQue

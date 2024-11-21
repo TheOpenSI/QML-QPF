@@ -1,0 +1,3 @@
+# mosaiQue
+
+variable quanvolutional kernel

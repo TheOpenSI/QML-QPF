@@ -1,6 +1,6 @@
 
 
-from mosaique.models.kernels import Kernel2d
+from mosaique.models.kernels import  Kernel2d4x4
 import numpy as np
 from typing import Any
 
@@ -12,10 +12,18 @@ dataset: np.ndarray[..., np.dtype[Any]] =(
 
 kernel_shape = [2,2]
 
-kernel = Kernel2d(kernel_shape)
+kernel = Kernel2d4x4(kernel_shape)
 
 kernel.fit(dataset[[0,1]])
 
 data_blocks = kernel.transform(dataset[[0,1]])
 
-print(data_blocks[0])
+data_blocks = data_blocks.transpose((0,2,1))
+
+data_blocks = kernel.post_transform(data_blocks)
+
+print(data_blocks[0].T)
+
+
+
+

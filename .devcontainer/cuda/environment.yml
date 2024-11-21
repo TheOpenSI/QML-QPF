@@ -3,6 +3,8 @@ channels:
   - default
 dependencies:
   - python=3.10.*
+  - notebook
+  - conda-build
   - pip
   - pip:
     - tensorflow[and-cuda]==2.16.1
@@ -11,5 +13,6 @@ dependencies:
     - matplotlib==3.8.4
     - seaborn
     - umap-learn
+
 
 prefix: /opt/conda/envs/QML-QPF

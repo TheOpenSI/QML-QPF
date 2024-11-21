@@ -3,7 +3,7 @@ import tensorflow as tf
 from tensorflow import keras
 
 import mosaique.config as cf
-import mosaique.quantumnode as qn
+import mosaique.legacy.quantumnode as qn
 
 
 @keras.utils.register_keras_serializable()

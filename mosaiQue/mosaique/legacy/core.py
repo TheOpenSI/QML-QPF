@@ -5,9 +5,9 @@ from pennylane import numpy as np
 from tensorflow import keras
 
 import mosaique.config as cf
-import mosaique.quantumlayer as ql
-import mosaique.quantumnode as qn
-from mosaique.visuals import Visualize
+import mosaique.legacy.quantumlayer as ql
+import mosaique.legacy.quantumnode as qn
+from mosaique.legacy.visuals import Visualize
 
 
 class Model_():

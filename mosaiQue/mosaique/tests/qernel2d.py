@@ -1,8 +1,6 @@
-from numpy.ma.core import product
-
 from mosaique.models.kernels import Kernel2d4x4
+from mosaique.models.operation import OperationLayer
 import pennylane as qml
-from pennylane import numpy as pnp
 import numpy as np
 from typing import Any
 
@@ -13,21 +11,33 @@ dataset: np.ndarray[..., np.dtype[Any]] =(
 
 dev = qml.device("default.qubit.tf", wires=4)
 @qml.qnode(dev, interface='tf')
-def qcnot_node(q1,q2,q3,q4):
+def cnot(inputs):
+    qml.AngleEmbedding(inputs[:, ...], wires=range(4), rotation='Y')
 
-    qml.RY(np.pi * q1, wires=0)
-    qml.RY(np.pi * q2, wires=1)
-    qml.RY(np.pi * q3, wires=2)
-    qml.RY(np.pi * q4, wires=3)
-
-    qml.CNOT(wires=[1, 2])
-    qml.CNOT(wires=[0, 3])
+    #qml.CNOT(wires=[0, 1])
+    #qml.CNOT(wires=[2, 3])
 
     # Measurement producing 4 classical output values
-    return pnp.asarray([qml.expval(qml.PauliZ(wires=0)),qml.expval(qml.PauliZ(wires=1)),
-                        qml.expval(qml.PauliZ(wires=2)),qml.expval(qml.PauliZ(wires=3))])
+    return [qml.expval(qml.PauliZ(j)) for j in range(4)]
 
+kernel_shape = [2,2]
 
-#data_blocks = kernel.inverse_transform(data_blocks)
+kernel = Kernel2d4x4(kernel_shape)
 
-#print(data_blocks[0])
+kernel.fit(dataset)
+
+data_blocks = kernel.transform(dataset)[:,:,[0,3,2,1]]
+
+#data_blocks = (245 * ((data_blocks+80)/(784)))
+
+post_data = data_blocks.transpose((2,1,0))
+
+post_data = post_data.transpose((2,1,0))
+
+#post_data = post_data.reshape(20,14,14,4)
+
+#post_data = np.asarray((((OperationLayer(cnot).pre_op(data_blocks)+1)*100)-160)) // 1
+
+post_data = kernel.post_transform(post_data)[:,:,:,[0,3,2,1]]
+
+print((post_data)[0])

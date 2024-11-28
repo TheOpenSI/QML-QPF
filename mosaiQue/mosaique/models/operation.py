@@ -1,4 +1,5 @@
 import tensorflow as tf
+from PIL.ImageChops import offset
 from tensorflow import keras
 import pennylane as qml
 
@@ -17,7 +18,9 @@ class QuantumLayer(keras.layers.Layer):
         super().__init__(*args, **kwargs)
 
     def call(self, inputs):
-        return tf.transpose(tf.vectorized_map(self.q_node, inputs),(1,2,0))
+        # does not work without setting a batch size
+        return tf.stack(tf.vectorized_map(self.q_node, inputs),axis=1) - 1
+
 
 class OperationLayer():
     _q_layer: QuantumLayer
@@ -50,7 +53,7 @@ class OperationLayer():
         this_model = keras.models.Sequential([
             keras.layers.Rescaling(scale=1. / 255.0),
             self.q_layer,
-            keras.layers.Rescaling(scale=127.5, offset=127.5)
+            keras.layers.Rescaling(scale=-127.5)
         ])
         this_model.compile(
             optimizer='adam',

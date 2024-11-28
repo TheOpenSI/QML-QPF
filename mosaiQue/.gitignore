@@ -1,3 +1,6 @@
 /output
 /notebooks/mnist_train/
 /notebooks/mnist_test/
+notebooks/*/*.npy
+notebooks/*/run*
+mosaique/models/__pycache__/*.pyc

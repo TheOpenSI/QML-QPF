@@ -29,26 +29,29 @@ class Kernel2d4x4:
     def transform(self, X: np.ndarray[..., np.dtype[Any]]):
         # shape MxN
         _m, _n = self.kernel_shape[:2]
-        return (X
-                .reshape((self.input_shape[0],-1, _m, self.input_shape[2]//_n, _n))
-                .transpose((0,1,3,2,4))
-                .reshape((self.input_shape[0], np.prod(self.input_shape[1:3])//(_m*_n), (_m*_n)))
+        # Use slicing to extract all 2x2 patches from each 28x28 image
+        # Reshape the array to extract all 2x2 patches
+        # The number of 2x2 patches along height and width of each 28x28 image is 14
+        return (X[:, :, :, np.newaxis]
+                .reshape(self.input_shape[0], self.input_shape[2]//_m, _m, self.input_shape[2]//_n, _n)
+                .transpose((0,1,3,4,2))
+                .reshape(self.input_shape[0], -1, _m * _n)
                 )
 
     def post_transform(self, X: np.ndarray[..., np.dtype[Any]]):
         # shape MxN
         _m, _n = self.kernel_shape[:2]
         return (X
-                .reshape((self.input_shape[0], self.input_shape[2] // _m, self.input_shape[2] // _n,  _m * _n))
-                )
+                .reshape(self.input_shape[0], _n*_m, self.input_shape[2]//_n, self.input_shape[2]//_m)
+                .transpose(0,2,3,1)
+        )
 
     def channel_merge(self, X: np.ndarray[..., np.dtype[Any]]):
         # shape MxN
         _m, _n = self.kernel_shape[:2]
         return (X
-                .reshape((self.input_shape[0],-1, self.input_shape[2]//_n, _m,  _n))
-                .transpose((0,1,3,2,4))
-                .reshape(self.input_shape)
+                .reshape(self.input_shape[0], self.input_shape[2]//_m, self.input_shape[2]//_n, _m,_n)
+                .transpose((0,1,2,4,3))
+                .transpose((0, 1, 3, 2, 4))
+                .reshape(self.input_shape[:3])
                 )
-
-

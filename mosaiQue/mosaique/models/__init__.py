@@ -36,6 +36,8 @@ class ConvolutionLayer4x4:
 
     def post_transform(self, dataset: np.ndarray[..., np.dtype[Any]]):
         return self.kernel.post_transform(dataset)
+    def channel_merge(self, dataset: np.ndarray[..., np.dtype[Any]]):
+        return self.kernel.channel_merge(dataset)
 
     def save(self, dataset: np.ndarray[..., np.dtype[Any]], variant:[int]):
         variant_string = ''.join(map(str,variant))

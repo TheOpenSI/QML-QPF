@@ -1,0 +1,15 @@
+{
+  "EPOCHS": 30,
+  "RNDM_LAYERS": 1,
+  "TRAIN_IMAGES": 6,
+  "TEST_IMAGES": 1,
+  "CHANNELS": 4,
+  "SAVE_PATH": "../results_test/",
+  "PREPROCESS": 1,
+  "DATA_REDUCTION": 1,
+  "REDUCTION_RATIO": 1,
+  "FILTER_TYPE": 0,
+  "POOLING_SIZE": 2,
+  "CLASSES": 10,
+  "BATCH_SIZE": 124
+}

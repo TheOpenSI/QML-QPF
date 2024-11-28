@@ -18,11 +18,14 @@ kernel.fit(dataset[[0,1]])
 
 data_blocks = kernel.transform(dataset[[0,1]])
 
-data_blocks = data_blocks.transpose((0,2,1))
+print(data_blocks[0])
 
-data_blocks = kernel.post_transform(data_blocks)
+#data_blocks = data_blocks.transpose((0,2,1))
 
-print(data_blocks[0].T)
+#data_blocks = kernel.post_transform(data_blocks)
+
+#print(data_blocks[0])
+
 
 
 

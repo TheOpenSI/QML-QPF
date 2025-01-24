@@ -14,7 +14,7 @@ A Python library for applying quantum convolutions with PennyLane, designed to f
 
 To install the library, clone the repository and install the required dependencies including conda-build
 
-use develop to install the library
+use develop to install the library where in the example QML-QPF is the name of the virtual conda environment
 
 sudo /opt/conda/bin/conda-develop -n QML-QPF PATH /workspaces/QML-QPF/mosaiQue
 

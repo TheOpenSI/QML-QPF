@@ -162,3 +162,5 @@ cython_debug/
 # Local testing
 scripts/testPennylane.ipynb
 results_*/
+_OA_*
+Dataset

@@ -2,5 +2,6 @@
     "jupyter.kernels.excludePythonEnvironments": [
         "/opt/conda/bin/python",
         "/usr/bin/python3"
-      ]
+      ],
+      "files.autoSave": "afterDelay"
 }
